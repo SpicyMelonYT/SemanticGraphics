@@ -47,6 +47,7 @@ Currently p5js is inside the project because I use that alot. But you can remove
 
 - SGWindow
 - SGP5Canvas
+- SGGroupBox
 
 ##### Layout Widgets
 
