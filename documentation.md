@@ -1,5 +1,3 @@
-Certainly! Let's delve into a detailed documentation of Semantic Graphics (SG), focusing on each widget, utility functions, and the SGDocument class, including their descriptions, constructors, properties, functions, and parent classes.
-
 ### Semantic Graphics (SG) Documentation
 
 #### SGDocument Class
