@@ -24,6 +24,14 @@ function start() {
   mainB.onClick(() => {
     f1.toggleVisibility();
   });
+
+  b2.onClick(() => {
+    canvas.p5.circle(random(800), random(800), 200);
+  });
+
+  nw = w.addChild(new SGWindow());
+  nw.x = 1250;
+  nw.y = 25;
 }
 
 function update() {}
