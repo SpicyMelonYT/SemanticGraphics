@@ -16,7 +16,7 @@ function start() {
   gb.addChild(new SGButton("WORKING"));
   f1 = gb.addChild(new SGFoldout("FOLDOUT"));
   gb2 = f1.addChild(new SGGroupBox("Testing W546456456615561oah"));
-  gb2.addChild(new SGButton("FOLDOUT"));
+  b1 = gb2.addChild(new SGButton("FOLDOUT"));
 }
 
 function update() {}

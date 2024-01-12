@@ -1468,10 +1468,10 @@ class SGP5Canvas extends SGPanel {
     sketch = function (p5) {
       p5.setup = function () {
         p5.createCanvas(width, height);
+        p5.background(51);
       };
 
       p5.draw = function () {
-        p5.background(51);
         p5.ellipse(p5.mouseX, p5.mouseY, 50, 50);
       };
     }
