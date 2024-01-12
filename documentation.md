@@ -84,8 +84,17 @@
 - **Constructor Inputs**: None.
 - **Properties**: `spacing`.
 - **Functions**:
+
   - `addChild(widget)`, `getChildAtIndex(index)`, `removeChildAtIndex(index)`, `getAllChildren()`, `foreachChild(func)`: Manage child widgets.
   - `setVertical()`, `setHorizontal()`: Set layout orientation.
+
+#### SGGroupBox Class
+
+- **Parent Class**: SGVerticalLayout.
+- **Description**: A layout like panel that groups things into it and has a title.
+- **Constructor Inputs**: `title`.
+- **Properties**: `title`.
+  - `addChild(widget)`: Manage child widgets.
 
 #### SGComboBox Class
 

@@ -760,6 +760,30 @@ class SGLabel extends SGWidget {
       this.removeCSS("overflow");
     }
   }
+
+  getTextWidth() {
+    // Create a temporary element with the same text and styling
+    var tempElement = $("<span>")
+      .text(this.text)
+      .css({
+        "font-family": this.fontFamily,
+        "font-size": this.fontSize,
+        "font-weight": this.fontWeight,
+        "white-space": "nowrap", // Ensure text is in one line
+        visibility: "hidden", // Hide the element from view
+        position: "absolute", // Avoid affecting layout
+      })
+      .appendTo("body");
+
+    // Measure the width of the temporary element
+    var width = tempElement.width();
+
+    // Remove the temporary element from the DOM
+    tempElement.remove();
+
+    // Return the measured width
+    return width;
+  }
 }
 
 class SGTextEdit extends SGWidget {
