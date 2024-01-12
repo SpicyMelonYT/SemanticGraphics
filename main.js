@@ -1436,3 +1436,29 @@ class SGFoldout extends SGWidget {
     return widget;
   }
 }
+
+class SGP5Canvas extends SGPanel {
+  constructor(
+    width = 100,
+    height = 100,
+    sketch = function (p) {
+      p.setup = function () {
+        p.createCanvas(width, height);
+      };
+
+      p.draw = function () {
+        p.background(51);
+        p.ellipse(p.mouseX, p.mouseY, 50, 50);
+      };
+    }
+  ) {
+    super();
+    this.padding = 0;
+    this.transparent();
+    this.sketch = sketch;
+    this.p5 = new p5(this.sketch, this.element[0]);
+    this.canvas = this.p5.canvas;
+    this.width = width;
+    this.height = height;
+  }
+}

@@ -5,9 +5,27 @@
 Semantic Graphics (SG) is a JavaScript widget system that utilizes JQuery and SemanticUI
 It features simple to use modular widgets designed to feel a bit more like working with game engine objects rather than the loosy goosy html nature of element
 
+---
+
 ### Documentation
 
 The documentation.md file shows all the documentation for each widget and other features of SG
+
+---
+
+### Getting Started
+
+You can download the repo as is an run the index.html for easy development on localhost! For websites just include the correct src's listed in the index.html file.
+The main.js file is what stores the code for all the SG stuff. The sketch.js file is where you can create your application
+All of these things are changable and renameable as long as you rename it in the index.html
+
+---
+
+### Notes
+
+Currently p5js is inside the project because I use that alot. But you can remove the src from the html and nothing bad should happen. Just dont use widgets that relate to p5js like the SGP5Canvas :D!
+
+---
 
 ### Widgets
 
@@ -25,6 +43,7 @@ The documentation.md file shows all the documentation for each widget and other 
 
  ##### Compound Widgets
  - SGWindow
+ - SGP5Canvas
 
   ##### Layout Widgets
  - SGLayout
