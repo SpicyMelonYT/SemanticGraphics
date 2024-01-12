@@ -1502,3 +1502,41 @@ class SGP5Canvas extends SGPanel {
     this.p5.draw = value;
   }
 }
+
+class SGGroupBox extends SGVerticalLayout {
+  constructor(title = "Group Box") {
+    super();
+    this.padding = 0;
+    this.spacing = 0;
+    this.backgroundColor = "#353535";
+    this.titleLabel = this.addChild(new SGLabel(title));
+    this.titleLabel.margin = 15;
+    this.titleLabel.transparent();
+    this.titleLabel.color = "#ffffff";
+    this.titleLabel.fontSize = 16;
+    this.title = title;
+
+    this.body = this.addChild(new SGHorizontalLayout(title));
+    this.body.transparent();
+
+    this.constructed = true;
+  }
+
+  addChild(child) {
+    if (this.constructed === true) {
+      this.body.addChild(child);
+    } else {
+      super.addChild(child);
+    }
+    return child;
+  }
+
+  get title() {
+    return this._title;
+  }
+
+  set title(value) {
+    this._title = value;
+    this.titleLabel.text = value;
+  }
+}
