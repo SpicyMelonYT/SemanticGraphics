@@ -212,6 +212,7 @@ class SGWidget {
   initDefaultProperties() {
     this._position = "absolute";
     this._margin = 0;
+    this.visibility = true;
   }
 
   onElement() {
@@ -317,6 +318,13 @@ class SGWidget {
     this._position = value;
   }
 
+  get depth() {
+    return this.setCSS("z-index");
+  }
+  set depth(value) {
+    this.setCSS("z-index", value);
+  }
+
   get parent() {
     return this.element.parent();
   }
@@ -395,6 +403,26 @@ class SGWidget {
       "filter",
       `drop-shadow(${offsetX}px ${offsetY}px ${blur}px ${color})`
     );
+  }
+
+  hide() {
+    this.visibility = false;
+    this.element.hide();
+  }
+
+  show() {
+    this.visibility = true;
+    this.element.show();
+  }
+
+  toggleVisibility() {
+    this.visibility = !this.visibility;
+
+    if (this.visibility) {
+      this.show();
+    } else {
+      this.hide();
+    }
   }
 
   destroy() {
@@ -1445,10 +1473,12 @@ class SGFoldout extends SGWidget {
       mode = "expanded";
       this.titleBar.addClass("active");
       this.contentArea.transition("slide down");
+      this.element.css("z-index", 1);
     } else {
       mode = "collapsed";
       this.titleBar.removeClass("active");
       this.contentArea.transition("slide up");
+      this.element.css("z-index", "");
     }
 
     this._callbacks.forEach((callback) => callback(mode));

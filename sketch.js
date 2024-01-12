@@ -13,12 +13,17 @@ function start() {
   gb.x = 825;
   gb.y = 25;
 
-  gb.addChild(new SGButton("WORKING"));
+  mainB = gb.addChild(new SGButton("WORKING"));
   column = gb.addChild(new SGColumn("FOLDOUT"));
-  f1 = gb.addChild(new SGFoldout("FOLDOUT"));
-  f2 = gb.addChild(new SGFoldout("FOLDOUT"));
+  f1 = column.addChild(new SGFoldout("FOLDOUT"));
+  f2 = column.addChild(new SGFoldout("FOLDOUT"));
+  b2 = column.addChild(new SGButton("FOLDOUT"));
   gb2 = f1.addChild(new SGGroupBox("Testing W546456456615561oah"));
   b1 = gb2.addChild(new SGButton("FOLDOUT"));
+
+  mainB.onClick(() => {
+    f2.toggleVisibility();
+  });
 }
 
 function update() {}
