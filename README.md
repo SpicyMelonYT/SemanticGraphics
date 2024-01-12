@@ -9,7 +9,7 @@ It features simple to use modular widgets designed to feel a bit more like worki
 
 ### Documentation
 
-The documentation.md file [Link Text](documentation.md) shows all the documentation for each widget and other features of SG
+The [documentation.mb file](documentation.md) shows all the documentation for each widget and other features of SG
 
 ---
 
