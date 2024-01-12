@@ -135,6 +135,13 @@
   - `onToggle(callback)`, `toggle()`: Toggle the foldout and register toggle callbacks.
   - `addChild(widget)`: Add child widgets to the content area.
 
+#### SGP5Canvas Class
+
+- **Parent Class**: SGPanel.
+- **Description**: A P5 canvas widget.
+- **Constructor Inputs**: `width`, `height`, `sketch`.
+- **Properties**: `setup`, `draw`.
+
 #### Utility Functions and Prototyping
 
 - **Array.prototype.random(count)**: Select random elements from an array.

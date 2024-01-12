@@ -29,23 +29,27 @@ Currently p5js is inside the project because I use that alot. But you can remove
 
 ### Widgets
 
- - SGWidget: Base class for widgets
+- SGWidget: Base class for widgets
 
 ##### Basic Widgets
- - SGButton
- - SGSlider
- - SGLabel
- - SGTextEdit
- - SGLineEdit
- - SGComboBox
- - SGDropdown
- - SGPanel
 
- ##### Compound Widgets
- - SGWindow
- - SGP5Canvas
+- SGButton
+- SGSlider
+- SGLabel
+- SGTextEdit
+- SGLineEdit
+- SGComboBox
+- SGDropdown
+- SGPanel
+- SGFoldout
 
-  ##### Layout Widgets
- - SGLayout
- - SGVerticalLayout
- - SGHorizontalLayout
+##### Compound Widgets
+
+- SGWindow
+- SGP5Canvas
+
+##### Layout Widgets
+
+- SGLayout
+- SGVerticalLayout
+- SGHorizontalLayout

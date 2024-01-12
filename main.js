@@ -1441,14 +1441,14 @@ class SGP5Canvas extends SGPanel {
   constructor(
     width = 100,
     height = 100,
-    sketch = function (p) {
-      p.setup = function () {
-        p.createCanvas(width, height);
+    sketch = function (p5) {
+      p5.setup = function () {
+        p5.createCanvas(width, height);
       };
 
-      p.draw = function () {
-        p.background(51);
-        p.ellipse(p.mouseX, p.mouseY, 50, 50);
+      p5.draw = function () {
+        p5.background(51);
+        p5.ellipse(p5.mouseX, p5.mouseY, 50, 50);
       };
     }
   ) {
@@ -1460,5 +1460,21 @@ class SGP5Canvas extends SGPanel {
     this.canvas = this.p5.canvas;
     this.width = width;
     this.height = height;
+  }
+
+  get setup() {
+    return this.p5.setup;
+  }
+
+  set setup(value) {
+    this.p5.setup = value;
+  }
+
+  get draw() {
+    return this.p5.draw;
+  }
+
+  set draw(value) {
+    this.p5.draw = value;
   }
 }
