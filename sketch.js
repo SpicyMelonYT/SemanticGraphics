@@ -22,7 +22,7 @@ function start() {
   b1 = gb2.addChild(new SGButton("FOLDOUT"));
 
   mainB.onClick(() => {
-    f2.toggleVisibility();
+    f1.toggleVisibility();
   });
 }
 

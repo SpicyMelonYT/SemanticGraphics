@@ -1477,8 +1477,14 @@ class SGFoldout extends SGWidget {
     } else {
       mode = "collapsed";
       this.titleBar.removeClass("active");
-      this.contentArea.transition("slide up");
-      this.element.css("z-index", "");
+      this.contentArea.transition({
+        animation: "slide up",
+        duration: 500, // Duration of slide up animation
+        onComplete: () => {
+          // Reset z-index after slide up animation completes
+          this.element.css("z-index", "");
+        },
+      });
     }
 
     this._callbacks.forEach((callback) => callback(mode));
