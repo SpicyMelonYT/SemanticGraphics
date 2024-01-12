@@ -15,6 +15,8 @@
 
 #### SGWidget Class
 
+[Code](main.js#L23)
+
 - **Parent Class**: None.
 - **Description**: Base class for all SG widgets.
 - **Constructor Inputs**: `x`, `y`, `width`, `height`.
