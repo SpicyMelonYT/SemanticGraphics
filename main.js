@@ -941,14 +941,14 @@ class SGLayout extends SGWidget {
   }
 }
 
-class SGHorizontalLayout extends SGLayout {
+class SGRow extends SGLayout {
   constructor() {
     super();
     this.setHorizontal();
   }
 }
 
-class SGVerticalLayout extends SGLayout {
+class SGColumn extends SGLayout {
   constructor() {
     super();
     this.setVertical();
@@ -1209,7 +1209,7 @@ class SGWindow extends SGPanel {
     this.body.backgroundColor = "#d0d0d0";
     this.body.overflow = "hidden";
 
-    this.topbar = this.addChild(new SGHorizontalLayout());
+    this.topbar = this.addChild(new SGRow());
     this.topbar.backgroundColor = "transparent";
     this.topbar.padding = 0;
     this.topbar.spacing = 5;
@@ -1503,7 +1503,7 @@ class SGP5Canvas extends SGPanel {
   }
 }
 
-class SGGroupBox extends SGVerticalLayout {
+class SGGroupBox extends SGColumn {
   constructor(title = "Group Box") {
     super();
     this.padding = 0;
@@ -1516,7 +1516,7 @@ class SGGroupBox extends SGVerticalLayout {
     this.titleLabel.fontSize = 16;
     this.title = title;
 
-    this.body = this.addChild(new SGHorizontalLayout(title));
+    this.body = this.addChild(new SGRow(title));
     this.body.transparent();
 
     this.constructed = true;
