@@ -79,6 +79,27 @@ function random(...args) {
   }
 }
 
+function toPython(
+  data,
+  callback = (response) => {},
+  errorCallback = (error) => {},
+  port = 5005
+) {
+  sliderValue = slider.value;
+  $.ajax({
+    url: "http://localhost:" + port + "/connection",
+    type: "POST",
+    contentType: "application/json",
+    data: JSON.stringify(data),
+    success: function (response) {
+      callback(response);
+    },
+    error: function (error) {
+      errorCallback(error);
+    },
+  });
+}
+
 // WIDGETS
 function initializeSG() {
   SGDocument.backgroundColor = "#d0d0d0";
@@ -675,10 +696,8 @@ class SGLabel extends SGWidget {
     super();
     this.element = $("<div>").addClass("ui label");
     this.text = text;
-    this._alignX = "center";
-    this._alignY = "center";
-    this.alignX = "center";
-    this.alignY = "center";
+    this._align = "center";
+    this.align = "center";
     // this.dragSelectable = "text";
   }
 
@@ -728,11 +747,11 @@ class SGLabel extends SGWidget {
   }
 
   // Horizontal Alignment (alignX)
-  get alignX() {
-    return this._alignX;
+  get align() {
+    return this._align;
   }
 
-  set alignX(value) {
+  set align(value) {
     switch (value) {
       case "left":
         this.setCSS("text-align", "left");
@@ -749,34 +768,7 @@ class SGLabel extends SGWidget {
         );
         return;
     }
-    this._alignX = value;
-  }
-
-  // Vertical Alignment (alignY)
-  get alignY() {
-    return this._alignY;
-  }
-
-  set alignY(value) {
-    switch (value) {
-      case "top":
-        this.setCSS("vertical-align", "top");
-        break;
-      case "center":
-        this.setCSS("display", "flex");
-        this.setCSS("align-items", "center");
-        this.setCSS("justify-content", "center");
-        break;
-      case "bottom":
-        this.setCSS("vertical-align", "bottom");
-        break;
-      default:
-        console.error(
-          "Invalid alignY value. Use 'top', 'center', or 'bottom'."
-        );
-        return;
-    }
-    this._alignY = value;
+    this._align = value;
   }
 
   setMultiLine(active = true) {
