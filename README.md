@@ -11,6 +11,8 @@ It features simple to use modular widgets designed to feel a bit more like worki
 
 The [documentation.mb file](documentation.md) shows all the documentation for each widget and other features of SG
 
+Official GPT located here [Semantic Graphics GPT](https://chat.openai.com/g/g-LjbEtXhmV-semantic-graphics-gpt)
+
 ---
 
 ### Getting Started
