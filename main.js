@@ -1481,8 +1481,10 @@ class SGFoldout extends SGWidget {
         animation: "slide up",
         duration: 500, // Duration of slide up animation
         onComplete: () => {
-          // Reset z-index after slide up animation completes
-          this.element.css("z-index", "");
+          if (this.expanded == false) {
+            // Reset z-index after slide up animation completes
+            this.element.css("z-index", "");
+          }
         },
       });
     }
@@ -1504,7 +1506,7 @@ class SGP5Canvas extends SGPanel {
     sketch = function (p5) {
       p5.setup = function () {
         p5.createCanvas(width, height);
-        p5.background(51);
+        // p5.background(51);
       };
 
       p5.draw = function () {
