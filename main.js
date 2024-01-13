@@ -1570,3 +1570,119 @@ class SGGroupBox extends SGColumn {
     this.titleLabel.text = value;
   }
 }
+
+class SGCheckBox extends SGWidget {
+  constructor(label = "", checked = false) {
+    super();
+    this.element = $("<div>").addClass("ui segment"); // Using a segment class for styling
+    this.box = $("<div>").addClass("ui checkbox");
+    this.label = $("<label>").text(label);
+    this.input = $("<input>").attr({ type: "checkbox", checked: checked });
+
+    // Append the input (checkbox) first, then the label
+    this.box.append(this.input, this.label);
+
+    // Append the checkbox element to the panel
+    this.element.append(this.box);
+
+    // Initialize Semantic UI checkbox functionality
+    this.box.checkbox();
+
+    this.padding = 8;
+    this.backgroundColor = "#353535";
+    this.color = "white";
+  }
+
+  get color() {
+    return this.label.css("color");
+  }
+
+  set color(value) {
+    this.label.css("color", value);
+  }
+
+  // Getter and setter for the checked property
+  get checked() {
+    return this.input.prop("checked");
+  }
+
+  set checked(value) {
+    this.input.prop("checked", value);
+  }
+
+  // Getter and setter for the label text property
+  get text() {
+    return this.label.text();
+  }
+
+  set text(value) {
+    this.label.text(value);
+  }
+
+  // Register a callback for onChange
+  onChange(callback) {
+    if (typeof callback === "function") {
+      this.input.on("change", () => callback(this.checked));
+    }
+  }
+}
+
+class SGRadioButton extends SGWidget {
+  constructor(name, label = "", checked = false) {
+    super();
+    this.element = $("<div>").addClass("ui segment"); // Panel for styling and structure
+    this.radio = $("<div>").addClass("ui radio checkbox");
+    this.label = $("<label>").text(label);
+    this.input = $("<input>").attr({
+      type: "radio",
+      name: name,
+      checked: checked,
+    });
+
+    // Append the input (radio button) and the label to the element
+    this.radio.append(this.input, this.label);
+
+    // Append the radio button element to the panel
+    this.element.append(this.radio);
+
+    // Initialize Semantic UI radio button functionality
+    this.radio.checkbox();
+
+    this.padding = 8;
+    this.backgroundColor = "#353535";
+    this.color = "white";
+  }
+
+  get color() {
+    return this.label.css("color");
+  }
+
+  set color(value) {
+    this.label.css("color", value);
+  }
+
+  // Getter and setter for the checked property
+  get checked() {
+    return this.input.prop("checked");
+  }
+
+  set checked(value) {
+    this.input.prop("checked", value);
+  }
+
+  // Getter and setter for the label text property
+  get text() {
+    return this.label.text();
+  }
+
+  set text(value) {
+    this.label.text(value);
+  }
+
+  // Register a callback for onChange
+  onChange(callback) {
+    if (typeof callback === "function") {
+      this.input.on("change", () => callback(this.checked));
+    }
+  }
+}
