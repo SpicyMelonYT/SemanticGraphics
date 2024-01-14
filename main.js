@@ -589,6 +589,7 @@ class SGButton extends SGWidget {
     this.text = text;
     this.x = x;
     this.y = y;
+    this.setCSS("white-space", "nowrap");
   }
 
   get text() {
