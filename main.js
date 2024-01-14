@@ -85,7 +85,6 @@ function toPython(
   errorCallback = (error) => {},
   port = 5005
 ) {
-  sliderValue = slider.value;
   $.ajax({
     url: "http://localhost:" + port + "/connection",
     type: "POST",
@@ -98,6 +97,46 @@ function toPython(
       errorCallback(error);
     },
   });
+}
+
+function openFileDialog(
+  callback = () => {},
+  allowMultiple = false,
+  folderMode = false
+) {
+  // Create an invisible file input element
+  let fileInput = $("<input>", {
+    type: "file",
+    style: "display: none;",
+  });
+
+  // If allowing multiple file selections
+  if (allowMultiple) {
+    fileInput.attr("multiple", "");
+  }
+
+  // If allowing folder selection
+  if (folderMode) {
+    fileInput.attr("webkitdirectory", "");
+  }
+
+  // Append to body (hidden)
+  $("body").append(fileInput);
+
+  // Event listener when file is selected
+  fileInput.on("change", function (event) {
+    // Handle file or folder selection here
+    // For example, pass the files to a callback function
+    if (callback && typeof callback === "function") {
+      callback(event.target.files);
+    }
+
+    // Remove the input element after selection
+    fileInput.remove();
+  });
+
+  // Trigger the click event on the file input
+  fileInput.trigger("click");
 }
 
 // WIDGETS
