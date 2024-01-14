@@ -38,6 +38,8 @@ Currently p5js is inside the project because I use that alot. But you can remove
 - SGButton
 - SGSlider
 - SGLabel
+- SGCheckBox
+- SGRadioButton
 - SGTextEdit
 - SGLineEdit
 - SGComboBox
@@ -50,9 +52,10 @@ Currently p5js is inside the project because I use that alot. But you can remove
 - SGWindow
 - SGP5Canvas
 - SGGroupBox
+- SGNotebook
 
 ##### Layout Widgets
 
 - SGLayout
-- SGVerticalLayout
-- SGHorizontalLayout
+- SGColumn
+- SGRow
