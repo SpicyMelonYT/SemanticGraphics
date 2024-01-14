@@ -1686,3 +1686,125 @@ class SGRadioButton extends SGWidget {
     }
   }
 }
+
+class SGNotebook extends SGColumn {
+  constructor() {
+    super();
+    this.padding = 5;
+    this.spacing = 5;
+
+    this.tabsRowSpacer = this.addChild(new SGPanel());
+    this.tabsRowSpacer.transparent();
+    this.tabsRowSpacer.spacing = 5;
+    this.tabsRowSpacer.padding = 0;
+    this.tabsRowSpacer.height = 40;
+
+    this.tabsRow = this.addChild(new SGRow());
+    this.tabsRow.transparent();
+    this.tabsRow.spacing = 5;
+    this.tabsRow.padding = 0;
+    this.tabsRow.absoluteLayout();
+    this.tabsRow.height = 40;
+    this.tabsRow.x = 5;
+    this.tabsRow.y = 5;
+
+    this.contentRow = this.addChild(new SGRow());
+    this.contentRow.transparent();
+    this.contentRow.spacing = 0;
+    this.contentRow.padding = 0;
+
+    this.buttons = new Map();
+    this.content = new Map();
+    this.openedTab = "";
+
+    this.constructed = true;
+    this.addTab("Main");
+    this.openTab("Main");
+  }
+
+  addTab(tab) {
+    let button = this.tabsRow.addChild(new SGButton(tab));
+    let content = this.contentRow.addChild(new SGLayout());
+    content.padding = 0;
+    content.transparent();
+    content.hide();
+    this.content.set(tab, content);
+    this.buttons.set(tab, button);
+    button.onClick(() => {
+      this.openTab(tab);
+      this.fixTabSpacer();
+    });
+    this.fixTabSpacer();
+    return { button: button, content };
+  }
+
+  hasTab(tab) {
+    return this.content.has(tab);
+  }
+
+  removeTab(tab) {
+    if (this.hasTab(tab)) {
+      let content = this.content.get(tab);
+      this.content.delete(tab);
+      content.destroy();
+      let button = this.buttons.get(tab);
+      this.buttons.delete(tab);
+      button.destroy();
+      this.fixTabSpacer();
+      let tabs = this.getTabs();
+      if (tabs.length >= 0) {
+        this.openTab(tabs[0]);
+      }
+    }
+  }
+
+  addChild(child, tab = "Main") {
+    if (this.constructed === true) {
+      if (this.content.has(tab)) {
+        let content = this.content.get(tab);
+        content.addChild(child);
+      } else {
+        if (this.content.size <= 0) {
+          console.error(
+            "This notebook does not have any tabs to add the child too"
+          );
+        } else {
+          let tab = this.getTabs()[0];
+          let content = this.content.get(tab);
+          content.addChild(child);
+        }
+      }
+    } else {
+      super.addChild(child);
+    }
+    return child;
+  }
+
+  openTab(tab) {
+    if (this.content.has(this.openedTab)) {
+      let content = this.content.get(this.openedTab);
+      content.hide();
+      let button = this.buttons.get(this.openedTab);
+      button.element.removeClass("ui green button");
+      button.element.addClass("ui button");
+    }
+
+    if (this.content.has(tab)) {
+      let content = this.content.get(tab);
+      content.show();
+      this.openedTab = tab;
+      let button = this.buttons.get(tab);
+      button.element.removeClass("ui button");
+      button.element.addClass("ui green button");
+    }
+    this.fixTabSpacer();
+  }
+
+  getTabs() {
+    return Array.from(this.content.keys());
+  }
+
+  fixTabSpacer() {
+    this.tabsRowSpacer.width = this.tabsRow.width;
+  }
+}

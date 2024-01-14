@@ -13,6 +13,17 @@
   - `display`, `position`, `textAlign`, `overflow`: CSS display, position, text alignment, and overflow properties.
 - **Methods**: Getter and setter for each property.
 
+Template
+
+#### [Widget Class Name] Class
+
+- **Parent Class**: [Parent Class Name].
+- **Description**: [Brief description of the widget's purpose and functionality].
+- **Constructor Inputs**: [List of parameters accepted by the constructor].
+- **Properties**: [List of key properties specific to this widget].
+- **Functions**:
+  - [List and brief description of the widget's functions/methods].
+
 #### SGWidget Class
 
 - **Parent Class**: None.
@@ -57,6 +68,35 @@
 - **Properties**: `fontSize`, `fontFamily`, `fontWeight`, `alignX`, `alignY`.
 - **Functions**:
   - `setMultiLine(active)`: Enables or disables multi-line text.
+
+#### SGRadioButton Class
+
+- **Parent Class**: SGWidget.
+- **Description**: A radio button widget, part of a group of options where only one can be selected at a time.
+- **Constructor Inputs**:
+  - `name`: The name attribute for the radio button, determining its group.
+  - `label` (optional): The text label for the radio button.
+  - `checked` (optional): A boolean indicating if the radio button is initially checked.
+- **Properties**:
+  - `color`: The color of the label text.
+  - `checked`: Boolean value indicating if the radio button is checked.
+  - `text`: The text label of the radio button.
+- **Functions**:
+  - `onChange(callback)`: Registers a callback function to be called when the radio button state changes.
+
+#### SGCheckBox Class
+
+- **Parent Class**: SGWidget.
+- **Description**: A checkbox widget that allows users to select or deselect an option.
+- **Constructor Inputs**:
+  - `label` (optional): The text label for the checkbox.
+  - `checked` (optional): A boolean indicating if the checkbox is initially checked.
+- **Properties**:
+  - `color`: The color of the label text.
+  - `checked`: Boolean value indicating if the checkbox is checked.
+  - `text`: The text label of the checkbox.
+- **Functions**:
+  - `onChange(callback)`: Registers a callback function to be called when the checkbox state changes.
 
 #### SGTextEdit Class
 
@@ -150,6 +190,27 @@
 - **Description**: A P5 canvas widget.
 - **Constructor Inputs**: `width`, `height`, `sketch`.
 - **Properties**: `setup`, `draw`.
+
+#### SGNotebook Class
+
+- **Parent Class**: SGColumn.
+- **Description**: A notebook-style widget with tabs for organizing content into different sections.
+- **Constructor Inputs**: No additional inputs for the constructor.
+- **Properties**:
+  - `tabsRowSpacer`: A spacer for the row of tabs.
+  - `tabsRow`: The row containing the tabs.
+  - `contentRow`: The row displaying the content of the selected tab.
+  - `buttons`: Map of tab names to their button elements.
+  - `content`: Map of tab names to their content layouts.
+  - `openedTab`: Name of the currently opened tab.
+- **Functions**:
+  - `addTab(tab)`: Adds a new tab.
+  - `hasTab(tab)`: Checks if a tab exists.
+  - `removeTab(tab)`: Removes a tab.
+  - `addChild(child, tab)`: Adds a child widget to a specified tab.
+  - `openTab(tab)`: Opens a specified tab.
+  - `getTabs()`: Returns an array of all tab names.
+  - `fixTabSpacer()`: Adjusts the spacer width to match the tab row.
 
 #### Utility Functions and Prototyping
 
