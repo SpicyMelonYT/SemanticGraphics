@@ -139,6 +139,25 @@ function openFileDialog(
   fileInput.trigger("click");
 }
 
+// EVENTS
+class SGEvent {
+  constructor() {
+    this.callbacks = [];
+  }
+
+  on(callback) {
+    if (typeof callback === "function") {
+      return this.callbacks.push(callback);
+    }
+  }
+
+  trigger(...args) {
+    for (let callback of this.callbacks) {
+      callback(...args);
+    }
+  }
+}
+
 // WIDGETS
 function initializeSG() {
   SGDocument.backgroundColor = "#d0d0d0";
@@ -333,18 +352,26 @@ class SGWidget {
     this.setCSS("user-select", value);
   }
 
-  // Getter and Setter for X (left) position
   get x() {
-    return parseInt(this.getCSS("left"));
+    let parent = this.element.offsetParent();
+    if (!parent.length || parent.is(document.body)) {
+      return this.element.offset().left;
+    } else {
+      return this.element.position().left;
+    }
   }
 
   set x(value) {
     this.setCSS("left", value + "px");
   }
 
-  // Getter and Setter for Y (top) position
   get y() {
-    return parseInt(this.getCSS("top"));
+    let parent = this.element.offsetParent();
+    if (!parent.length || parent.is(document.body)) {
+      return this.element.offset().top;
+    } else {
+      return this.element.position().top;
+    }
   }
 
   set y(value) {
@@ -353,7 +380,14 @@ class SGWidget {
 
   // Getter and Setter for width
   get width() {
-    return parseInt(this.getCSS("width"));
+    let widthValue = this.getCSS("width");
+
+    if (widthValue === "auto" || isNaN(parseInt(widthValue))) {
+      // Use getBoundingClientRect to get the rendered width
+      return this.element[0].getBoundingClientRect().width;
+    } else {
+      return parseInt(widthValue);
+    }
   }
 
   set width(value) {
@@ -362,7 +396,14 @@ class SGWidget {
 
   // Getter and Setter for height
   get height() {
-    return parseInt(this.getCSS("height"));
+    let heightValue = this.getCSS("height");
+
+    if (heightValue === "auto" || isNaN(parseInt(heightValue))) {
+      // Use getBoundingClientRect to get the rendered height
+      return this.element[0].getBoundingClientRect().height;
+    } else {
+      return parseInt(heightValue);
+    }
   }
 
   set height(value) {
@@ -465,6 +506,10 @@ class SGWidget {
     );
   }
 
+  removeDropShadow() {
+    this.setCSS("filter", "none");
+  }
+
   hide() {
     this.visibility = false;
     this.element.hide();
@@ -489,6 +534,10 @@ class SGWidget {
     if (this._element != null) {
       this._element.remove();
     }
+  }
+
+  isDestroyed() {
+    return this.element.parent()[0] == null;
   }
 
   // Default CSS Style Properties
@@ -1846,5 +1895,230 @@ class SGNotebook extends SGColumn {
 
   fixTabSpacer() {
     this.tabsRowSpacer.width = this.tabsRow.width;
+  }
+}
+
+class SGSlidingTab extends SGRow {
+  constructor() {
+    super();
+    this.padding = 0;
+    this.spacing = 0;
+    this.backgroundColor = "#353535";
+    this.inner = this.addChild(new SGRow());
+    this.inner.padding = 0;
+    this.inner.spacing = 0;
+    this.inner.depth = -2;
+    this.inner.removeDropShadow();
+    this.inner.transparent();
+    this.setCSS("border", "4px solid #21ba45");
+    this.setCSS("border-radius", 11);
+
+    this.tabMap = new Map();
+    this._value = "";
+    this.selectingPanel = new SGPanel();
+    this.selectingPanel.backgroundColor = "#21ba45";
+    this.inner.element.append(this.selectingPanel.element);
+    this.selectingPanel.depth = -1;
+    this.selectingPanel.width = this.width;
+    this.selectingPanel.height = this.height;
+    this.selectingPanel.hide();
+    this.selectingPanel.removeDropShadow();
+    this.selectingPanelX = this.selectingPanel.x;
+    this.selectingPanelY = this.selectingPanel.y;
+    this.selectingPanelWidth = this.selectingPanel.width;
+    this.selectingPanelHeight = this.selectingPanel.height;
+
+    this.isAnimating = false;
+    this.animTargetButton = null;
+    this.speed = 0.3;
+
+    this.onAnimationEndEvent = new SGEvent();
+    this.onChangeEvent = new SGEvent();
+  }
+
+  addTab(tab) {
+    let tabButton = new SGButton(tab);
+    this.tabMap.set(tab, tabButton);
+    this.inner.addChild(tabButton);
+    tabButton.removeDropShadow();
+    tabButton.transparent();
+    tabButton.color = "white";
+
+    if (this.tabMap.size == 1) {
+      this.selectingPanel.show();
+      this.snapToTab(tab);
+    }
+
+    tabButton.onClick(() => {
+      this.selectTab(tab);
+    });
+
+    return tabButton;
+  }
+
+  selectTab(tab, snap = false) {
+    if (this.value != tab) {
+      this._value = tab;
+      this.onChangeEvent.trigger();
+    }
+    if (this.tabMap.has(tab)) {
+      let tabButton = this.tabMap.get(tab);
+      this.animTargetButton = tabButton;
+      if (snap == true) {
+        this.snapToTab(tab);
+      } else {
+        if (this.isAnimating == false) {
+          this.animateToTab();
+        }
+      }
+    }
+  }
+
+  removeTab(tab) {
+    if (this.tabMap.has(tab)) {
+      let tabButton = this.tabMap.get(tab);
+      this.tabMap.delete(tab);
+      tabButton.destroy();
+      if (this.tabMap.size >= 1) {
+        this.value = this.getTabs()[0];
+      } else {
+        this.selectingPanel.hide();
+      }
+    }
+  }
+
+  clear() {
+    let tabs = this.getTabs();
+    for (let tab of tabs) {
+      this.removeTab(tab);
+    }
+  }
+
+  get tabs() {
+    return this.getTabs();
+  }
+
+  set tabs(tabs) {
+    this.clear();
+    for (let tab of tabs) {
+      this.addTab(tab);
+    }
+  }
+
+  get value() {
+    return this._value;
+  }
+
+  set value(value) {
+    this._value = value;
+    this.selectTab(value, true);
+  }
+
+  onChange(callback) {
+    return this.onChangeEvent.on(callback);
+  }
+
+  onAnimationEnd(callback) {
+    return this.onAnimationEndEvent.on(callback);
+  }
+
+  getTabs() {
+    return Array.from(this.tabMap.keys());
+  }
+
+  lerp(a, b, factor) {
+    return a + (b - a) * factor;
+  }
+
+  animateToTab() {
+    this.isAnimating = true;
+    const animate = () => {
+      if (this.isDestroyed()) return;
+      if (this.animTargetButton.isDestroyed()) return;
+
+      let animTargetX = this.animTargetButton.x - 1;
+      let animTargetY = this.animTargetButton.y - 1;
+      let animTargetWidth = this.animTargetButton.width + 2;
+      let animTargetHeight = this.animTargetButton.height + 2;
+
+      this.selectingPanelX = this.lerp(
+        this.selectingPanelX,
+        animTargetX,
+        this.speed
+      );
+
+      this.selectingPanelY = this.lerp(
+        this.selectingPanelY,
+        animTargetY,
+        this.speed
+      );
+
+      this.selectingPanelWidth = this.lerp(
+        this.selectingPanelWidth,
+        animTargetWidth,
+        this.speed
+      );
+
+      this.selectingPanelHeight = this.lerp(
+        this.selectingPanelHeight,
+        animTargetHeight,
+        this.speed
+      );
+
+      this.selectingPanel.x = this.selectingPanelX;
+      this.selectingPanel.y = this.selectingPanelY;
+      this.selectingPanel.width = this.selectingPanelWidth;
+      this.selectingPanel.height = this.selectingPanelHeight;
+
+      let closeEnough = 0;
+
+      if (Math.abs(this.selectingPanelX - animTargetX) <= 1) {
+        this.selectingPanel.x = animTargetX;
+        closeEnough++;
+      }
+
+      if (Math.abs(this.selectingPanelY - animTargetY) <= 1) {
+        this.selectingPanel.y = animTargetY;
+        closeEnough++;
+      }
+
+      if (Math.abs(this.selectingPanelWidth - animTargetWidth) <= 1) {
+        this.selectingPanel.width = animTargetWidth;
+        closeEnough++;
+      }
+
+      if (Math.abs(this.selectingPanelHeight - animTargetHeight) <= 1) {
+        this.selectingPanel.height = animTargetHeight;
+        closeEnough++;
+      }
+
+      if (closeEnough == 4) {
+        this.isAnimating = false;
+        this.onAnimationEndEvent.trigger();
+        return;
+      }
+
+      setTimeout(animate, 1000 / 60);
+    };
+
+    animate();
+  }
+
+  snapToTab(tab) {
+    if (this.tabMap.has(tab)) {
+      let tabButton = this.tabMap.get(tab);
+      this.animTargetButton = tabButton;
+      this.selectingPanel.x = tabButton.x;
+      this.selectingPanel.y = tabButton.y;
+      this.selectingPanel.width = tabButton.width;
+      this.selectingPanel.height = tabButton.height;
+      this.selectingPanelX = this.selectingPanel.x;
+      this.selectingPanelY = this.selectingPanel.y;
+      this.selectingPanelWidth = this.selectingPanel.width;
+      this.selectingPanelHeight = this.selectingPanel.height;
+      this.isAnimating = false;
+      this.onChangeEvent.trigger();
+      this.onAnimationEndEvent.trigger();
+    }
   }
 }
